@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/chat.dart';
-import '../models/message.dart';
-import '../models/user.dart';
 import '../services/telegram_service.dart';
 import '../services/database_service.dart';
 import '../widgets/chat_list.dart';

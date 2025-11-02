@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import 'screens/main_screen.dart';
-import 'services/database_service.dart';
-import 'services/telegram_service.dart';
 import 'services/notification_service.dart';
 
 void main() async {
@@ -10,7 +8,6 @@ void main() async {
   await WindowManager.instance.ensureInitialized();
 
   // Initialize services
-  await DatabaseService().init();
   await NotificationService().init();
 
   WindowOptions windowOptions = const WindowOptions(

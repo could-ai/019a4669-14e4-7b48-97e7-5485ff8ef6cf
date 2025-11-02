@@ -4,7 +4,6 @@ import 'package:just_audio/just_audio.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final WinToast _winToast = WinToast();
   AudioPlayer? _audioPlayer;
 
   Future<void> init() async {
@@ -13,18 +12,16 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(settings);
 
     // For Windows
-    await _winToast.initialize(appName: 'Telegram Bot Manager');
+    await WinToast.instance().initialize(appName: 'Telegram Bot Manager');
     _audioPlayer = AudioPlayer();
   }
 
   Future<void> showNotification(String title, String body, {String? soundPath}) async {
     // Windows notification with sound
-    await _winToast.showToast(
-      toast: Toast(
-        title: title,
-        body: body,
-        actions: [],
-      ),
+    await WinToast.instance().showToast(
+      type: ToastType.text02,
+      title: title,
+      subtitle: body,
     );
 
     if (soundPath != null) {

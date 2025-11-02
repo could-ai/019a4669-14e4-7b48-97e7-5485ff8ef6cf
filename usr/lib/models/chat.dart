@@ -1,3 +1,5 @@
+import './user.dart';
+
 class Chat {
   final int id;
   final User user;
