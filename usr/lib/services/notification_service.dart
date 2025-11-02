@@ -1,0 +1,46 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:win_toast/win_toast.dart';
+import 'package:just_audio/just_audio.dart';
+
+class NotificationService {
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final WinToast _winToast = WinToast();
+  AudioPlayer? _audioPlayer;
+
+  Future<void> init() async {
+    const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings settings = InitializationSettings(android: androidSettings);
+    await _flutterLocalNotificationsPlugin.initialize(settings);
+
+    // For Windows
+    await _winToast.initialize(appName: 'Telegram Bot Manager');
+    _audioPlayer = AudioPlayer();
+  }
+
+  Future<void> showNotification(String title, String body, {String? soundPath}) async {
+    // Windows notification with sound
+    await _winToast.showToast(
+      toast: Toast(
+        title: title,
+        body: body,
+        actions: [],
+      ),
+    );
+
+    if (soundPath != null) {
+      await _audioPlayer?.setFilePath(soundPath);
+      await _audioPlayer?.play();
+    }
+
+    // Fallback for other platforms
+    const NotificationDetails details = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'channel_id',
+        'Notifications',
+        importance: Importance.high,
+        priority: Priority.high,
+      ),
+    );
+    await _flutterLocalNotificationsPlugin.show(0, title, body, details);
+  }
+}
