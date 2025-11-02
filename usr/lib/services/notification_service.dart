@@ -12,11 +12,7 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(settings);
 
     // For Windows
-    await WinToast.instance().initialize(
-      appName: 'Telegram Bot Manager',
-      productName: 'Telegram Bot Manager',
-      companyName: 'CouldAI',
-    );
+    await WinToast.instance().initialize();
     _audioPlayer = AudioPlayer();
   }
 
@@ -24,7 +20,7 @@ class NotificationService {
     // Windows notification with sound
     await WinToast.instance().showToast(
       toast: Toast(
-        type: ToastType.text02,
+        template: ToastType.text02,
         title: title,
         subtitle: body,
       ),
