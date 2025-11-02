@@ -12,21 +12,31 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(settings);
 
     // For Windows
-    await WinToast.instance().initialize(appName: 'Telegram Bot Manager');
+    await WinToast.instance().initialize(
+      appName: 'Telegram Bot Manager',
+      productName: 'Telegram Bot Manager',
+      companyName: 'CouldAI',
+    );
     _audioPlayer = AudioPlayer();
   }
 
   Future<void> showNotification(String title, String body, {String? soundPath}) async {
     // Windows notification with sound
     await WinToast.instance().showToast(
-      type: ToastType.text02,
-      title: title,
-      subtitle: body,
+      toast: Toast(
+        type: ToastType.text02,
+        title: title,
+        subtitle: body,
+      ),
     );
 
-    if (soundPath != null) {
-      await _audioPlayer?.setFilePath(soundPath);
-      await _audioPlayer?.play();
+    if (soundPath != null && soundPath.isNotEmpty) {
+      try {
+        await _audioPlayer?.setFilePath(soundPath);
+        await _audioPlayer?.play();
+      } catch (e) {
+        print("Error playing notification sound: $e");
+      }
     }
 
     // Fallback for other platforms
