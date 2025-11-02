@@ -16,6 +16,7 @@ class NotificationService {
       aumId: 'com.example.telegrambotmanager', // Unique ID for your app
       displayName: 'Telegram Bot Manager',
       iconPath: '', // Optional: path to an icon file
+      clsid: '23979848-c121-421a-9247-8f391a65f7c1', // Added to fix compilation error
     );
     _audioPlayer = AudioPlayer();
   }
@@ -24,9 +25,11 @@ class NotificationService {
     // Windows notification with sound
     await WinToast.instance().showToast(
       toast: Toast(
-        type: ToastType.text02,
-        title: title,
-        subtitle: body,
+        template: ToastTemplate(
+          type: ToastTemplateType.text02,
+          title: title,
+          body: body,
+        ),
       ),
     );
 
